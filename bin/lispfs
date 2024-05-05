@@ -14,6 +14,10 @@ indentln() {
 	v=$((${1} * 4))
 	printf "%${v}s%s\n" "" "${2:-}"
 }
+error() {
+	printf '%s: error: %s\n' "$0" "${1:-something borked}"
+	exit "${2:-1}"
+}
 
 printdir() {
 	for file in "${2}"/*; do
@@ -49,6 +53,7 @@ printdir() {
 	done
 }
 
+test -e "${root}" || error "no such file"
 printdir 0 "${root}"
 printf "\n"
 
