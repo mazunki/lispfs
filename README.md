@@ -8,7 +8,7 @@ fixed
 ## how to use
 
 run the following to see the output
-`bin/lispfs examples/project1`
+`bin/lispfs examples/example1`
 
 then looksie at the structure (perhaps with `tree`) to get an idea of the layout
 
