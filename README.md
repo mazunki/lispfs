@@ -5,3 +5,10 @@ lets you compile a filesystem structure into valid lisp code. someone said every
 
 fixed
 
+
+##### btw
+
+the code isn't really pretty
+
+TODO: port to lisp
+
