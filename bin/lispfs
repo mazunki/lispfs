@@ -1,0 +1,54 @@
+#!/bin/sh
+set -eu
+shopt -s nullglob
+root=${1:-.}
+
+printname() {
+	basename "${file}" | sed 's/^[[:digit:]]\{1,\}-//'
+}
+indent() {
+	v=$((${1} * 4))
+	printf "%${v}s%s " "" "$2"
+}
+indentln() {
+	v=$((${1} * 4))
+	printf "%${v}s%s\n" "" "${2:-}"
+}
+
+printdir() {
+	for file in "${2}"/*; do
+		test -d "${file}" && test ! -L "${file}" && {
+			if find "${file}" -mindepth 1 \( -type d -o -name '*@*' \) | grep -qz .; then
+				printf "%${1}s(" ''
+				printf '%s\n' "$(printname "${file}")"
+				printdir "$(( ${1} + 2))" "${file}"
+				printf "%${1}s)" ""
+			else
+				printf "%${1}s(" ""
+				printf ' %s ' "$(printname "${file}")"
+				printdir "0" "${file}"
+				printf ")" ""
+			fi
+			printf '\n'
+			continue
+		}
+		case "$(printname ${file})" in
+			.*) continue ;;
+			@*)
+				printf "%${1}s'( " ""
+				while IFS= read -r -d $'\0' data; do
+					printf "%s " "${data}"
+				done < "${file}"
+				printf ")\n"
+			;;
+			*)
+				if test "$1" = 0; then suffix=" "; else suffix=\\n; fi
+				printf "%${1}s%s${suffix}" '' "$(printname "${file}")"
+				;;
+		esac
+	done
+}
+
+printdir 0 "${root}"
+printf "\n"
+
