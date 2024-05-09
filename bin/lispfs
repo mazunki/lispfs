@@ -31,12 +31,12 @@ printdir() {
 				printf "%${1}s(" ""
 				printf ' %s ' "$(printname "${file}")"
 				printdir "0" "${file}"
-				printf ")" ""
+				printf ")"
 			fi
 			printf '\n'
 			continue
 		}
-		case "$(printname ${file})" in
+		case "$(printname "${file}")" in
 			.*) continue ;;
 			@*)
 				printf "%${1}s'( " ""
