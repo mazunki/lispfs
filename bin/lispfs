@@ -1,5 +1,6 @@
 #!/bin/sh
 set -eu
+shopt -s nullglob
 root=${1:-.}
 
 printname() {
@@ -19,7 +20,6 @@ error() {
 }
 
 printdir() {
-	find "${2}" -mindepth 1 | grep -q . || return
 	for file in "${2}"/*; do
 		test -d "${file}" && test ! -L "${file}" && {
 			if find "${file}" -mindepth 1 \( -type d -o -name '*@*' \) | grep -qz .; then
